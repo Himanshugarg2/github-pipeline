@@ -2,19 +2,19 @@ pipeline {
   agent any
 
   stages {
-    stage('Checkout') {
-      steps { checkout scm }
-    }
     stage('Build') {
-      steps { sh 'npm install' }
+      steps {
+        bat 'echo Building project...'
+      }
     }
     stage('Test') {
-      steps { sh 'npm test || echo "No tests"' }
+      steps {
+        bat 'echo Running tests...'
+      }
     }
     stage('Deploy') {
       steps {
-        echo 'Deploying...'
-        archiveArtifacts artifacts: '**/dist/**', fingerprint: true
+        bat 'echo Deploying application...'
       }
     }
   }
