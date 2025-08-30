@@ -1,21 +1,53 @@
 pipeline {
-  agent any
+    agent any
 
-  stages {
-    stage('Build') {
-      steps {
-        bat 'echo Building project...'
-      }
+    tools {
+        nodejs "NodeJS"  
     }
-    stage('Test') {
-      steps {
-        bat 'echo Running tests...'
-      }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Pulling code from GitHub..."
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo "Installing dependencies..."
+                sh 'npm install'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Building React app..."
+                sh 'npm run build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running tests..."
+                sh 'npm test -- --watchAll=false'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying React app..."
+                
+            }
+        }
     }
-    stage('Deploy') {
-      steps {
-        bat 'echo Deploying application...'
-      }
+
+    post {
+        success {
+            echo "React pipeline executed successfully "
+        }
+        failure {
+            echo "React pipeline failed"
+        }
     }
-  }
 }
