@@ -1,60 +1,40 @@
-pipeline {
-    agent any
-
-    tools {
-        nodejs "NodeJS"  
-    }
-
-    stages {
+node {
+    try {
         stage('Checkout') {
-            steps {
-                echo "Pulling code from GitHub..."
-                checkout scm
-            }
+            echo "Pulling code from GitHub..."
+            checkout scm
         }
 
         stage('Install Dependencies') {
-            steps {
-                dir('my-app') {    
-                    sh 'npm install'
-                }
+            dir('my-app') {
+                sh 'npm install'
             }
         }
 
         stage('Build') {
-            steps {
-                dir('my-app') {
-                    echo "Building React app..."
-                    sh 'npm run build'
-                }
+            dir('my-app') {
+                echo "Building React app..."
+                sh 'npm run build'
             }
         }
 
-       stage('Test') {
-    steps {
-        dir('my-app') {
-            echo "Running tests..."
-            sh 'npm test -- --watchAll=false --passWithNoTests'
+        stage('Test') {
+            dir('my-app') {
+                echo "Running tests..."
+                sh 'npm test -- --watchAll=false --passWithNoTests'
+            }
         }
-    }
-}
-
 
         stage('Deploy') {
-            steps {
-                dir('my-app') {
-                    echo "Deploying React app..."
-                }
+            dir('my-app') {
+                echo "Deploying React app..."
+                // put deploy steps here
             }
         }
-    }
 
-    post {
-        success {
-            echo "React pipeline executed successfully!"
-        }
-        failure {
-            echo " React pipeline failed!"
-        }
+        echo "React pipeline executed successfully!"
+    } catch (err) {
+        echo "React pipeline failed!"
+        throw err
     }
 }
