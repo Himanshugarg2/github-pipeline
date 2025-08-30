@@ -14,11 +14,13 @@ pipeline {
         }
 
         stage('Install Dependencies') {
-            steps {
-                echo "Installing dependencies..."
-                sh 'npm install'
-            }
+    steps {
+        dir('my-app') {    
+            sh 'npm install'
         }
+    }
+}
+
 
         stage('Build') {
             steps {
