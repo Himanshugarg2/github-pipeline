@@ -1,7 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
+
+import React, { useState } from 'react';
 
 function App() {
+  const [count, setCount] = useState(0);
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +18,11 @@ function App() {
         >
           Learn React
         </a>
+        <div style={{ marginTop: '30px' }}>
+          <h2>Counter: {count}</h2>
+          <button onClick={() => setCount(count - 1)} style={{ marginRight: '10px' }}>-</button>
+          <button onClick={() => setCount(count + 1)}>+</button>
+        </div>
       </header>
     </div>
   );
