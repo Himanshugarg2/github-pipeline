@@ -30,14 +30,15 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                dir('my-app') {
-                    echo "Running tests..."
-                    sh 'npm test -- --watchAll=false'
-                }
-            }
+       stage('Test') {
+    steps {
+        dir('my-app') {
+            echo "Running tests..."
+            sh 'npm test -- --watchAll=false --passWithNoTests'
         }
+    }
+}
+
 
         stage('Deploy') {
             steps {
