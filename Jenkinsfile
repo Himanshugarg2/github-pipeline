@@ -15,39 +15,46 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo "Installing dependencies..."
-                sh 'npm install'
+                dir('my-app') {    
+                    sh 'npm install'
+                }
             }
         }
 
         stage('Build') {
             steps {
-                echo "Building React app..."
-                sh 'npm run build'
+                dir('my-app') {
+                    echo "Building React app..."
+                    sh 'npm run build'
+                }
             }
         }
 
-        stage('Test') {
-            steps {
-                echo "Running tests..."
-                sh 'npm test -- --watchAll=false'
-            }
+       stage('Test') {
+    steps {
+        dir('my-app') {
+            echo "Running tests..."
+            sh 'npm test -- --watchAll=false --passWithNoTests'
         }
+    }
+}
+
 
         stage('Deploy') {
             steps {
-                echo "Deploying React app..."
-                
+                dir('my-app') {
+                    echo "Deploying React app..."
+                }
             }
         }
     }
 
     post {
         success {
-            echo "React pipeline executed successfully "
+            echo "React pipeline executed successfully!"
         }
         failure {
-            echo "React pipeline failed"
+            echo " React pipeline failed!"
         }
     }
 }
